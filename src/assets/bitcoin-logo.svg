@@ -1,0 +1,31 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="100" height="100" rx="15" fill="#F7931A"/>
+<path d="M69.41 51.05C68.09 49.96 65.17 48.36 65.17 48.36C65.17 48.36 68.37 47.03 69.69 46.01C72.57 43.79 73.22 41.84 72.82 39.18C72.44 36.64 70.36 34.8 67.75 33.87C67.75 33.87 67.88 32.71 67.92 31.77C67.94 31.3 67.95 30.83 67.95 30.37C67.95 27.99 66.13 26 63.76 26H36.25C33.88 26 32.06 27.99 32.06 30.37C32.06 30.83 32.07 31.3 32.09 31.77C32.13 32.71 32.26 33.87 32.26 33.87C29.65 34.8 27.57 36.64 27.19 39.18C26.79 41.84 27.44 43.79 30.32 46.01C31.64 47.03 34.84 48.36 34.84 48.36C34.84 48.36 31.92 49.96 30.6 51.05C27.78 53.21 26.97 55.22 27.38 57.88C27.76 60.37 29.75 62.19 32.26 63.1C32.26 63.1 32.12 64.29 32.09 You got it! Looks like a few pesky import gremlins snuck in. 👾 I'll zap those errors right away:
+
+1.  Creating the missing `Label` component.
+2.  Adding the `cn` utility import to the Checkout page.
+3.  Importing `Loader2` and the newly created `Label` component into the Payment page.
+
+Just a moment while I work my magic! This should be quick! 🪄
+
+<horizonsArtifact>
+<horizonsAction type="file" filePath="src/components/ui/label.jsx">
+import React from 'react';
+import * as LabelPrimitives from '@radix-ui/react-label';
+import { cva } from 'class-variance-authority';
+import { cn } from '@/lib/utils';
+
+const labelVariants = cva(
+  'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+);
+
+const Label = React.forwardRef(({ className, ...props }, ref) => (
+  <LabelPrimitives.Root
+    ref={ref}
+    className={cn(labelVariants(), className)}
+    {...props}
+  />
+));
+Label.displayName = LabelPrimitives.Root.displayName;
+
+export { Label };

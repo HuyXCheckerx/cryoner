@@ -50,8 +50,8 @@ const Homepage = ({ variants, transition, startNewTask }) => {
     >
       <header className="mb-8 flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-slate-100">Welcome, User!</h1>
-          <p className="text-sm text-slate-400">Here's your DorkPlus overview.</p>
+          <h1 className="text-3xl font-bold text-slate-100">Welcome, Perycent!</h1>
+          <p className="text-sm text-slate-400">Here's your Cryoner Dashboard overview.</p>
         </div>
         <div className="flex space-x-2">
             <Button variant="outline" className="text-slate-300 border-slate-700 hover:bg-slate-800 hover:text-slate-100">

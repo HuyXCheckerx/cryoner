@@ -1,0 +1,137 @@
+{
+  "module": "scraper",
+  "name": "Scraper Parser Configuration",
+  "description": "Configuration for extracting data from search engines using dorks",
+  "version": "1.0.0",
+  "settings": {
+    "search_engines": {
+      "google": {
+        "enabled": true,
+        "max_results_per_page": 100,
+        "delay_between_requests": 2.5,
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "timeout": 30,
+        "retry_attempts": 3
+      },
+      "bing": {
+        "enabled": false,
+        "max_results_per_page": 50,
+        "delay_between_requests": 3.0,
+        "user_agent": "Mozilla/5.0 (compatible; Bingbot/2.0)",
+        "timeout": 25,
+        "retry_attempts": 2
+      },
+      "yahoo": {
+        "enabled": false,
+        "max_results_per_page": 40,
+        "delay_between_requests": 4.0,
+        "user_agent": "Mozilla/5.0 (compatible; Yahoo! Slurp)",
+        "timeout": 35,
+        "retry_attempts": 2
+      },
+      "baidu": {
+        "enabled": false,
+        "max_results_per_page": 20,
+        "delay_between_requests": 5.0,
+        "user_agent": "Mozilla/5.0 (compatible; Baiduspider/2.0)",
+        "timeout": 40,
+        "retry_attempts": 3
+      },
+      "yandex": {
+        "enabled": false,
+        "max_results_per_page": 30,
+        "delay_between_requests": 3.5,
+        "user_agent": "Mozilla/5.0 (compatible; YandexBot/3.0)",
+        "timeout": 30,
+        "retry_attempts": 2
+      },
+      "aol": {
+        "enabled": false,
+        "max_results_per_page": 25,
+        "delay_between_requests": 4.5,
+        "user_agent": "Mozilla/5.0 (compatible; AOLbot/1.0)",
+        "timeout": 35,
+        "retry_attempts": 2
+      },
+      "ask": {
+        "enabled": false,
+        "max_results_per_page": 15,
+        "delay_between_requests": 5.5,
+        "user_agent": "Mozilla/5.0 (compatible; AskBot/1.0)",
+        "timeout": 45,
+        "retry_attempts": 3
+      },
+      "naver": {
+        "enabled": false,
+        "max_results_per_page": 20,
+        "delay_between_requests": 6.0,
+        "user_agent": "Mozilla/5.0 (compatible; NaverBot/1.0)",
+        "timeout": 50,
+        "retry_attempts": 3
+      }
+    },
+    "dork_generation": {
+      "amount_to_generate": 25000,
+      "max_pages_per_dork": 10,
+      "dork_complexity": "medium",
+      "include_advanced_operators": true,
+      "custom_operators": [
+        "site:",
+        "inurl:",
+        "intitle:",
+        "intext:",
+        "filetype:",
+        "ext:"
+      ]
+    },
+    "filtering": {
+      "enable_filtering": true,
+      "filter_speed": "high",
+      "max_filtered_results": 10000,
+      "duplicate_removal": true,
+      "url_validation": true,
+      "content_validation": false
+    },
+    "output": {
+      "saving_location": "local_default",
+      "output_format": "txt",
+      "include_metadata": true,
+      "compress_output": false,
+      "backup_enabled": true
+    },
+    "performance": {
+      "max_concurrent_requests": 5,
+      "request_timeout": 30,
+      "connection_pool_size": 10,
+      "memory_limit": "2GB",
+      "cpu_usage_limit": 80
+    },
+    "proxies": {
+      "use_proxies": false,
+      "proxy_rotation": "round_robin",
+      "proxy_timeout": 10,
+      "max_proxy_failures": 3,
+      "proxy_list_file": null
+    },
+    "advanced": {
+      "respect_robots_txt": true,
+      "follow_redirects": true,
+      "max_redirect_depth": 3,
+      "custom_headers": {},
+      "ssl_verification": true,
+      "debug_mode": false
+    }
+  },
+  "files": {
+    "keywords_file": "keywords.txt",
+    "page_types_file": "page_types.txt",
+    "parameters_file": "parameters.txt"
+  },
+  "monitoring": {
+    "enable_logging": true,
+    "log_level": "info",
+    "save_progress": true,
+    "progress_interval": 30,
+    "performance_metrics": true
+  }
+} 

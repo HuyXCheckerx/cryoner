@@ -1,0 +1,187 @@
+{
+  "module": "antipublic",
+  "name": "Antipublic Checker Configuration",
+  "description": "Configuration for checking combolists against public databases",
+  "version": "1.0.0",
+  "settings": {
+    "combolist_processing": {
+      "input_file": "combolist.txt",
+      "input_format": "txt",
+      "encoding": "utf-8",
+      "line_separator": "\\n",
+      "remove_empty_lines": true,
+      "remove_duplicates": true,
+      "normalize_format": true,
+      "max_file_size": "1GB",
+      "batch_processing": true,
+      "batch_size": 10000
+    },
+    "check_speed": {
+      "lines_per_minute": 80000,
+      "concurrent_checks": 100,
+      "request_timeout": 5,
+      "connection_pool_size": 50,
+      "memory_limit": "2GB",
+      "cpu_usage_limit": 80,
+      "optimization_mode": "high"
+    },
+    "publicity_checking": {
+      "check_public_databases": true,
+      "check_private_databases": false,
+      "check_premium_databases": false,
+      "database_sources": [
+        "haveibeenpwned",
+        "dehashed",
+        "leakcheck",
+        "intelx",
+        "snusbase"
+      ],
+      "custom_databases": [],
+      "api_keys": {
+        "haveibeenpwned": null,
+        "dehashed": null,
+        "leakcheck": null,
+        "intelx": null,
+        "snusbase": null
+      }
+    },
+    "data_validation": {
+      "validate_emails": true,
+      "validate_passwords": true,
+      "validate_usernames": true,
+      "email_pattern": "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b",
+      "password_min_length": 1,
+      "password_max_length": 100,
+      "username_min_length": 1,
+      "username_max_length": 50
+    },
+    "result_categorization": {
+      "categorize_by_type": true,
+      "categorize_by_source": true,
+      "categorize_by_frequency": true,
+      "public_threshold": 1,
+      "private_threshold": 0,
+      "frequency_levels": ["low", "medium", "high", "very_high"]
+    },
+    "output_management": {
+      "output_format": "json",
+      "output_directory": "./antipublic_results",
+      "separate_files": {
+        "public_lines": "public_lines.txt",
+        "private_lines": "private_lines.txt",
+        "summary": "summary.json"
+      },
+      "include_metadata": true,
+      "compress_output": false,
+      "backup_original": true,
+      "create_summary": true,
+      "export_formats": ["json", "csv", "txt"]
+    },
+    "performance_settings": {
+      "check_speed_optimization": true,
+      "parallel_processing": true,
+      "thread_pool_size": 50,
+      "disk_cache_enabled": true,
+      "cache_size": "1GB",
+      "memory_optimization": true,
+      "garbage_collection": true
+    },
+    "proxy_configuration": {
+      "use_proxies": true,
+      "proxy_file": "proxies.txt",
+      "proxy_type": "http",
+      "proxy_rotation": "round_robin",
+      "proxy_timeout": 10,
+      "max_proxy_failures": 5,
+      "proxy_bandwidth_monitoring": true,
+      "proxy_authentication": {
+        "username": null,
+        "password": null
+      }
+    },
+    "monitoring_and_logging": {
+      "enable_logging": true,
+      "log_level": "info",
+      "save_progress": true,
+      "progress_interval": 30,
+      "performance_metrics": true,
+      "check_statistics": {
+        "track_total_lines": true,
+        "track_public_lines": true,
+        "track_private_lines": true,
+        "track_check_speed": true,
+        "track_database_hits": true
+      }
+    },
+    "advanced_settings": {
+      "custom_headers": {
+        "User-Agent": "AntipublicChecker/1.0"
+      },
+      "ssl_verification": true,
+      "follow_redirects": true,
+      "max_redirect_depth": 3,
+      "debug_mode": false,
+      "verbose_output": false,
+      "custom_check_rules": [],
+      "data_analysis": {
+        "pattern_recognition": true,
+        "entropy_analysis": true,
+        "similarity_detection": true
+      }
+    },
+    "safety_and_compliance": {
+      "safe_mode": true,
+      "rate_limiting": true,
+      "max_requests_per_second": 100,
+      "respect_api_limits": true,
+      "ethical_guidelines": true,
+      "data_privacy": true
+    }
+  },
+  "files": {
+    "combolist_file": "combolist.txt",
+    "proxies_file": "proxies.txt",
+    "output_directory": "./antipublic_results",
+    "logs_directory": "./logs",
+    "cache_directory": "./cache"
+  },
+  "publicity_tracking": {
+    "track_public": true,
+    "track_private": true,
+    "track_unknown": true,
+    "track_errors": true,
+    "track_timeouts": true
+  },
+  "database_coverage": {
+    "haveibeenpwned": {
+      "enabled": true,
+      "api_key_required": true,
+      "rate_limit": "1500/hour",
+      "coverage": "high"
+    },
+    "dehashed": {
+      "enabled": false,
+      "api_key_required": true,
+      "rate_limit": "1000/hour",
+      "coverage": "very_high"
+    },
+    "leakcheck": {
+      "enabled": false,
+      "api_key_required": true,
+      "rate_limit": "500/hour",
+      "coverage": "medium"
+    },
+    "intelx": {
+      "enabled": false,
+      "api_key_required": true,
+      "rate_limit": "100/hour",
+      "coverage": "high"
+    },
+    "snusbase": {
+      "enabled": false,
+      "api_key_required": true,
+      "rate_limit": "200/hour",
+      "coverage": "medium"
+    }
+  }
+} 

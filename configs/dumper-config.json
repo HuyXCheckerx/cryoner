@@ -1,0 +1,180 @@
+{
+  "module": "dumper",
+  "name": "Dumper Configuration",
+  "description": "Configuration for extracting data from databases and websites",
+  "version": "1.0.0",
+  "settings": {
+    "dumping_methods": {
+      "auto_detect": {
+        "enabled": true,
+        "priority": 1,
+        "timeout": 30,
+        "retry_attempts": 3
+      },
+      "sqli_union": {
+        "enabled": true,
+        "priority": 2,
+        "techniques": ["union_select", "order_by", "group_by"],
+        "payloads_file": "sqli_union_payloads.txt",
+        "timeout": 45,
+        "retry_attempts": 2
+      },
+      "sqli_error": {
+        "enabled": true,
+        "priority": 3,
+        "techniques": ["error_based", "boolean_based", "time_based"],
+        "payloads_file": "sqli_error_payloads.txt",
+        "timeout": 60,
+        "retry_attempts": 2
+      },
+      "wp_creds": {
+        "enabled": false,
+        "priority": 4,
+        "techniques": ["wp_config", "wp_users", "wp_options"],
+        "payloads_file": "wp_creds_payloads.txt",
+        "timeout": 40,
+        "retry_attempts": 2
+      },
+      "cpanel_backup": {
+        "enabled": false,
+        "priority": 5,
+        "techniques": ["backup_exploit", "config_extraction"],
+        "payloads_file": "cpanel_payloads.txt",
+        "timeout": 90,
+        "retry_attempts": 1
+      }
+    },
+    "target_configuration": {
+      "target_input": {
+        "mode": "file",
+        "target_file": "targets.txt",
+        "custom_targets": [],
+        "target_format": "url",
+        "encoding": "utf-8"
+      },
+      "target_validation": {
+        "validate_urls": true,
+        "check_connectivity": true,
+        "test_responsiveness": true,
+        "filter_invalid_targets": true
+      },
+      "target_limits": {
+        "max_targets": 1000,
+        "max_concurrent_targets": 10,
+        "timeout_per_target": 300
+      }
+    },
+    "data_extraction": {
+      "extract_users": true,
+      "extract_emails": true,
+      "extract_passwords": true,
+      "extract_databases": true,
+      "extract_tables": true,
+      "extract_columns": true,
+      "extract_admins": true,
+      "extract_sessions": true,
+      "custom_extraction_rules": []
+    },
+    "performance_settings": {
+      "dump_speed_optimization": true,
+      "max_concurrent_dumps": 5,
+      "memory_limit": "4GB",
+      "cpu_usage_limit": 90,
+      "disk_cache_enabled": true,
+      "cache_size": "2GB",
+      "batch_processing": true,
+      "batch_size": 100
+    },
+    "proxy_configuration": {
+      "use_proxies": true,
+      "proxy_file": "proxies.txt",
+      "proxy_type": "http",
+      "proxy_rotation": "random",
+      "proxy_timeout": 15,
+      "max_proxy_failures": 5,
+      "proxy_bandwidth_monitoring": true,
+      "proxy_authentication": {
+        "username": null,
+        "password": null
+      }
+    },
+    "output_management": {
+      "output_format": "json",
+      "output_directory": "./dumped_data",
+      "compress_output": true,
+      "backup_original": true,
+      "create_summary": true,
+      "export_formats": ["json", "csv", "txt", "sql"],
+      "data_organization": {
+        "group_by_target": true,
+        "group_by_data_type": true,
+        "include_metadata": true,
+        "timestamp_files": true
+      }
+    },
+    "safety_and_compliance": {
+      "safe_mode": true,
+      "avoid_destructive_operations": true,
+      "backup_before_dump": false,
+      "emergency_stop": true,
+      "compliance_mode": false,
+      "ethical_guidelines": true
+    },
+    "monitoring_and_logging": {
+      "enable_logging": true,
+      "log_level": "info",
+      "save_progress": true,
+      "progress_interval": 30,
+      "performance_metrics": true,
+      "dump_statistics": {
+        "track_rows_dumped": true,
+        "track_tables_found": true,
+        "track_databases_found": true,
+        "track_columns_found": true,
+        "track_admins_found": true
+      }
+    },
+    "advanced_settings": {
+      "custom_headers": {
+        "User-Agent": "DataDumper/1.0"
+      },
+      "ssl_verification": true,
+      "follow_redirects": true,
+      "max_redirect_depth": 5,
+      "debug_mode": false,
+      "verbose_output": false,
+      "custom_payloads": [],
+      "injection_points": ["GET", "POST", "Cookie", "Header"]
+    }
+  },
+  "files": {
+    "targets_file": "targets.txt",
+    "proxies_file": "proxies.txt",
+    "payloads_directory": "./payloads",
+    "output_directory": "./dumped_data",
+    "logs_directory": "./logs"
+  },
+  "data_composition": {
+    "track_data_types": true,
+    "data_type_mapping": {
+      "users": "user_credentials",
+      "emails": "email_addresses",
+      "passwords": "password_hashes",
+      "databases": "database_names",
+      "tables": "table_structures",
+      "columns": "column_data",
+      "admins": "admin_accounts",
+      "sessions": "session_data"
+    }
+  },
+  "found_items_tracking": {
+    "track_databases": true,
+    "track_tables": true,
+    "track_columns": true,
+    "track_admins": true,
+    "track_users": true,
+    "track_emails": true,
+    "track_passwords": true,
+    "track_sessions": true
+  }
+} 

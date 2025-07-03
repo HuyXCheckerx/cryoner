@@ -1,0 +1,136 @@
+{
+  "module": "dorks-checker",
+  "name": "Dorks Checker Configuration",
+  "description": "Configuration for validating and checking the effectiveness of your dorks",
+  "version": "1.0.0",
+  "settings": {
+    "dork_validation": {
+      "syntax_checking": true,
+      "operator_validation": true,
+      "length_limits": {
+        "min_length": 10,
+        "max_length": 2048
+      },
+      "forbidden_operators": [
+        "cache:",
+        "related:",
+        "info:"
+      ],
+      "required_operators": [],
+      "custom_validation_rules": []
+    },
+    "effectiveness_testing": {
+      "test_search_engines": ["google", "bing", "yahoo"],
+      "sample_size": 100,
+      "min_results_threshold": 10,
+      "max_results_threshold": 10000,
+      "quality_score_calculation": true,
+      "freshness_check": true
+    },
+    "search_engine_config": {
+      "google": {
+        "enabled": true,
+        "max_results": 100,
+        "delay_between_requests": 3.0,
+        "user_agent": "Mozilla/5.0 (compatible; DorkChecker/1.0)",
+        "timeout": 30
+      },
+      "bing": {
+        "enabled": true,
+        "max_results": 50,
+        "delay_between_requests": 4.0,
+        "user_agent": "Mozilla/5.0 (compatible; DorkChecker/1.0)",
+        "timeout": 25
+      },
+      "yahoo": {
+        "enabled": false,
+        "max_results": 40,
+        "delay_between_requests": 5.0,
+        "user_agent": "Mozilla/5.0 (compatible; DorkChecker/1.0)",
+        "timeout": 35
+      }
+    },
+    "dork_analysis": {
+      "complexity_scoring": true,
+      "coverage_analysis": true,
+      "redundancy_detection": true,
+      "optimization_suggestions": true,
+      "performance_metrics": true
+    },
+    "input_processing": {
+      "dorks_file": "dorks.txt",
+      "input_format": "txt",
+      "encoding": "utf-8",
+      "remove_empty_lines": true,
+      "remove_duplicates": true,
+      "normalize_whitespace": true
+    },
+    "output_generation": {
+      "report_format": "json",
+      "include_statistics": true,
+      "include_suggestions": true,
+      "include_examples": true,
+      "export_formats": ["json", "csv", "html"],
+      "output_directory": "./dork_reports"
+    },
+    "performance": {
+      "concurrent_checks": 5,
+      "request_timeout": 30,
+      "connection_pool_size": 10,
+      "memory_limit": "1GB",
+      "cpu_usage_limit": 70
+    },
+    "proxies": {
+      "use_proxies": false,
+      "proxy_file": "proxies.txt",
+      "proxy_rotation": "round_robin",
+      "proxy_timeout": 10,
+      "max_proxy_failures": 3
+    },
+    "scoring_system": {
+      "effectiveness_weight": 0.4,
+      "uniqueness_weight": 0.3,
+      "complexity_weight": 0.2,
+      "freshness_weight": 0.1,
+      "min_score_threshold": 0.5
+    },
+    "advanced": {
+      "debug_mode": false,
+      "verbose_output": false,
+      "custom_headers": {},
+      "ssl_verification": true,
+      "follow_redirects": true,
+      "max_redirect_depth": 3
+    }
+  },
+  "files": {
+    "dorks_file": "dorks.txt",
+    "proxies_file": "proxies.txt",
+    "output_directory": "./dork_reports",
+    "templates_directory": "./templates"
+  },
+  "monitoring": {
+    "enable_logging": true,
+    "log_level": "info",
+    "save_progress": true,
+    "progress_interval": 60,
+    "performance_metrics": true
+  },
+  "validation_rules": {
+    "syntax_patterns": {
+      "valid_operators": [
+        "site:", "inurl:", "intitle:", "intext:", "filetype:", "ext:",
+        "cache:", "related:", "info:", "define:", "phonebook:"
+      ],
+      "operator_syntax": "^[a-zA-Z]+:",
+      "quote_validation": true,
+      "bracket_validation": true
+    },
+    "content_rules": {
+      "min_keywords": 1,
+      "max_keywords": 20,
+      "forbidden_terms": [],
+      "required_terms": []
+    }
+  }
+} 

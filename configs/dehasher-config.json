@@ -1,0 +1,193 @@
+{
+  "module": "dehasher",
+  "name": "Dehasher Configuration",
+  "description": "Configuration for decrypting various hash types",
+  "version": "1.0.0",
+  "settings": {
+    "hash_types": {
+      "auto": {
+        "enabled": true,
+        "priority": 1,
+        "detection_methods": ["pattern", "length", "character_set"],
+        "fallback_types": ["md5", "sha1", "sha256"]
+      },
+      "md5": {
+        "enabled": true,
+        "priority": 2,
+        "length": 32,
+        "character_set": "hex",
+        "cracking_methods": ["rainbow_table", "brute_force", "dictionary"],
+        "timeout": 60
+      },
+      "sha1": {
+        "enabled": true,
+        "priority": 3,
+        "length": 40,
+        "character_set": "hex",
+        "cracking_methods": ["rainbow_table", "brute_force", "dictionary"],
+        "timeout": 120
+      },
+      "sha256": {
+        "enabled": true,
+        "priority": 4,
+        "length": 64,
+        "character_set": "hex",
+        "cracking_methods": ["rainbow_table", "brute_force", "dictionary"],
+        "timeout": 300
+      },
+      "sha512": {
+        "enabled": false,
+        "priority": 5,
+        "length": 128,
+        "character_set": "hex",
+        "cracking_methods": ["rainbow_table", "brute_force", "dictionary"],
+        "timeout": 600
+      },
+      "bcrypt": {
+        "enabled": false,
+        "priority": 6,
+        "length": 60,
+        "character_set": "alphanumeric",
+        "cracking_methods": ["brute_force", "dictionary"],
+        "timeout": 1800,
+        "cost_factor": 12
+      },
+      "wordpress": {
+        "enabled": false,
+        "priority": 7,
+        "length": 34,
+        "character_set": "alphanumeric",
+        "cracking_methods": ["rainbow_table", "dictionary"],
+        "timeout": 900
+      }
+    },
+    "cracking_methods": {
+      "rainbow_table": {
+        "enabled": true,
+        "table_path": "./rainbow_tables",
+        "supported_types": ["md5", "sha1", "sha256"],
+        "max_table_size": "10GB"
+      },
+      "dictionary": {
+        "enabled": true,
+        "dictionary_files": ["common_passwords.txt", "rockyou.txt"],
+        "dictionary_path": "./dictionaries",
+        "word_mangling": true,
+        "mangling_rules": ["l33t", "1337", "leet_speak"]
+      },
+      "brute_force": {
+        "enabled": false,
+        "character_set": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+        "min_length": 1,
+        "max_length": 8,
+        "parallel_threads": 4
+      }
+    },
+    "input_processing": {
+      "input_mode": "file",
+      "input_file": "hashes.txt",
+      "custom_input": "",
+      "input_format": "txt",
+      "encoding": "utf-8",
+      "hash_separator": "\\n",
+      "remove_empty_lines": true,
+      "remove_duplicates": true,
+      "hash_validation": true
+    },
+    "performance_settings": {
+      "crack_speed_optimization": true,
+      "max_concurrent_cracks": 50,
+      "memory_limit": "8GB",
+      "cpu_usage_limit": 95,
+      "gpu_acceleration": false,
+      "gpu_memory_limit": "4GB",
+      "disk_cache_enabled": true,
+      "cache_size": "5GB",
+      "batch_processing": true,
+      "batch_size": 1000
+    },
+    "proxy_configuration": {
+      "use_proxies": true,
+      "proxy_file": "proxies.txt",
+      "proxy_type": "http",
+      "proxy_rotation": "random",
+      "proxy_timeout": 10,
+      "max_proxy_failures": 5,
+      "proxy_bandwidth_monitoring": true,
+      "proxy_authentication": {
+        "username": null,
+        "password": null
+      }
+    },
+    "output_management": {
+      "output_format": "json",
+      "output_file": "cracked_hashes.json",
+      "output_directory": "./cracked_results",
+      "include_metadata": true,
+      "compress_output": false,
+      "backup_original": true,
+      "create_summary": true,
+      "export_formats": ["json", "csv", "txt"],
+      "result_organization": {
+        "group_by_hash_type": true,
+        "group_by_status": true,
+        "include_statistics": true,
+        "timestamp_results": true
+      }
+    },
+    "monitoring_and_logging": {
+      "enable_logging": true,
+      "log_level": "info",
+      "save_progress": true,
+      "progress_interval": 60,
+      "performance_metrics": true,
+      "crack_statistics": {
+        "track_total_hashes": true,
+        "track_cracked_hashes": true,
+        "track_not_found": true,
+        "track_crack_speed": true,
+        "track_hash_types": true
+      }
+    },
+    "advanced_settings": {
+      "custom_headers": {
+        "User-Agent": "HashCracker/1.0"
+      },
+      "ssl_verification": true,
+      "follow_redirects": true,
+      "max_redirect_depth": 3,
+      "debug_mode": false,
+      "verbose_output": false,
+      "custom_cracking_rules": [],
+      "hash_analysis": {
+        "pattern_recognition": true,
+        "entropy_analysis": true,
+        "similarity_detection": true
+      }
+    }
+  },
+  "files": {
+    "hashes_file": "hashes.txt",
+    "proxies_file": "proxies.txt",
+    "dictionaries_directory": "./dictionaries",
+    "rainbow_tables_directory": "./rainbow_tables",
+    "output_directory": "./cracked_results",
+    "logs_directory": "./logs"
+  },
+  "hash_type_tracking": {
+    "track_md5": true,
+    "track_sha1": true,
+    "track_sha256": true,
+    "track_sha512": true,
+    "track_bcrypt": true,
+    "track_wordpress": true,
+    "track_unknown": true
+  },
+  "crack_results_tracking": {
+    "track_cracked": true,
+    "track_not_found": true,
+    "track_errors": true,
+    "track_timeouts": true,
+    "track_partial_results": true
+  }
+} 

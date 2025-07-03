@@ -41,7 +41,7 @@ const Sidebar = ({ isSidebarOpen }) => {
     >
       <div className="flex items-center gap-2 px-1 py-3 mb-5 border-b border-slate-800">
         <Bot size={28} className="text-primary" />
-        <span className="text-xl font-bold text-slate-100">Cryoner Suite</span>
+        <span className="text-xl font-bold text-slate-100">Cryoner PRO</span>
       </div>
       <ul className="flex-1">
         <SidebarItem icon={<Home size={20} />} text="Homepage" to="/" />

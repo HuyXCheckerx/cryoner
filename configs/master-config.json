@@ -1,0 +1,248 @@
+{
+  "application": "Lux Parser SEO Tool",
+  "version": "1.0.0",
+  "description": "Master configuration for all modules in the Lux Parser SEO Tool",
+  "created": "2025-01-27T00:00:00Z",
+  "modules": {
+    "scraper": {
+      "enabled": true,
+      "config_file": "scraper-config.json",
+      "description": "Extract data from search engines using dorks",
+      "dependencies": [],
+      "priority": 1
+    },
+    "parser": {
+      "enabled": true,
+      "config_file": "parser-config.json",
+      "description": "Parse data with custom rules and proxies",
+      "dependencies": ["scraper"],
+      "priority": 2,
+      "specific_settings": {
+        "database_range": "Standard",
+        "search_aggressiveness": 9
+      }
+    },
+    "vulnerability": {
+      "enabled": true,
+      "config_file": "vulnerability-scanner-config.json",
+      "description": "Scan websites for common vulnerabilities (SQLi, XSS, etc.)",
+      "dependencies": [],
+      "priority": 3
+    },
+    "dorks-checker": {
+      "enabled": true,
+      "config_file": "dorks-checker-config.json",
+      "description": "Validate and check the effectiveness of your dorks",
+      "dependencies": [],
+      "priority": 4
+    },
+    "dumper": {
+      "enabled": true,
+      "config_file": "dumper-config.json",
+      "description": "Extract data from databases and websites",
+      "dependencies": ["vulnerability"],
+      "priority": 5
+    },
+    "dehasher": {
+      "enabled": true,
+      "config_file": "dehasher-config.json",
+      "description": "Decrypt various hash types",
+      "dependencies": ["dumper"],
+      "priority": 6
+    },
+    "antipublic": {
+      "enabled": true,
+      "config_file": "antipublic-checker-config.json",
+      "description": "Check combolists against public databases",
+      "dependencies": ["parser", "dehasher"],
+      "priority": 7
+    }
+  },
+  "global_settings": {
+    "performance": {
+      "max_concurrent_tasks": 3,
+      "memory_limit": "8GB",
+      "cpu_usage_limit": 90,
+      "disk_space_limit": "100GB"
+    },
+    "security": {
+      "encrypt_configs": false,
+      "secure_storage": false,
+      "api_key_encryption": false,
+      "audit_logging": true
+    },
+    "networking": {
+      "default_proxy_file": "proxies.txt",
+      "proxy_rotation": "round_robin",
+      "request_timeout": 30,
+      "max_retries": 3,
+      "user_agent": "LuxParser/1.0"
+    },
+    "storage": {
+      "output_directory": "./output",
+      "logs_directory": "./logs",
+      "cache_directory": "./cache",
+      "backup_directory": "./backups",
+      "temp_directory": "./temp"
+    },
+    "monitoring": {
+      "enable_logging": true,
+      "log_level": "info",
+      "log_rotation": true,
+      "max_log_size": "100MB",
+      "performance_metrics": true,
+      "error_reporting": true
+    }
+  },
+  "workflows": {
+    "standard_workflow": {
+      "name": "Standard Data Extraction Workflow",
+      "description": "Complete workflow from scraping to parsing to checking",
+      "steps": [
+        {
+          "step": 1,
+          "module": "scraper",
+          "description": "Extract data using dorks",
+          "required": true
+        },
+        {
+          "step": 2,
+          "module": "parser",
+          "description": "Parse extracted data with custom rules",
+          "required": true,
+          "config_overrides": {
+            "database_range": "Standard",
+            "search_aggressiveness": 9
+          }
+        },
+        {
+          "step": 3,
+          "module": "antipublic",
+          "description": "Check parsed data against public databases",
+          "required": false
+        }
+      ]
+    },
+    "vulnerability_workflow": {
+      "name": "Vulnerability Assessment Workflow",
+      "description": "Scan targets for vulnerabilities and extract data",
+      "steps": [
+        {
+          "step": 1,
+          "module": "vulnerability",
+          "description": "Scan targets for vulnerabilities",
+          "required": true
+        },
+        {
+          "step": 2,
+          "module": "dumper",
+          "description": "Extract data from vulnerable targets",
+          "required": true
+        },
+        {
+          "step": 3,
+          "module": "dehasher",
+          "description": "Decrypt extracted hashes",
+          "required": false
+        }
+      ]
+    },
+    "hash_analysis_workflow": {
+      "name": "Hash Analysis Workflow",
+      "description": "Focus on hash cracking and analysis",
+      "steps": [
+        {
+          "step": 1,
+          "module": "dehasher",
+          "description": "Decrypt hash types",
+          "required": true
+        },
+        {
+          "step": 2,
+          "module": "parser",
+          "description": "Parse cracked results",
+          "required": true,
+          "config_overrides": {
+            "database_range": "Standard",
+            "search_aggressiveness": 9
+          }
+        }
+      ]
+    }
+  },
+  "api_integrations": {
+    "haveibeenpwned": {
+      "enabled": false,
+      "api_key": null,
+      "rate_limit": "1500/hour",
+      "modules": ["antipublic"]
+    },
+    "dehashed": {
+      "enabled": false,
+      "api_key": null,
+      "rate_limit": "1000/hour",
+      "modules": ["antipublic"]
+    },
+    "leakcheck": {
+      "enabled": false,
+      "api_key": null,
+      "rate_limit": "500/hour",
+      "modules": ["antipublic"]
+    }
+  },
+  "file_templates": {
+    "keywords_template": {
+      "filename": "keywords.txt",
+      "description": "Keywords for dork generation",
+      "format": "txt",
+      "encoding": "utf-8"
+    },
+    "proxies_template": {
+      "filename": "proxies.txt",
+      "description": "Proxy list for requests",
+      "format": "txt",
+      "encoding": "utf-8"
+    },
+    "targets_template": {
+      "filename": "targets.txt",
+      "description": "Target URLs/IPs for scanning",
+      "format": "txt",
+      "encoding": "utf-8"
+    },
+    "hashes_template": {
+      "filename": "hashes.txt",
+      "description": "Hash list for cracking",
+      "format": "txt",
+      "encoding": "utf-8"
+    },
+    "combolist_template": {
+      "filename": "combolist.txt",
+      "description": "Combolist for antipublic checking",
+      "format": "txt",
+      "encoding": "utf-8"
+    }
+  },
+  "notifications": {
+    "email": {
+      "enabled": false,
+      "smtp_server": null,
+      "smtp_port": 587,
+      "username": null,
+      "password": null,
+      "recipients": []
+    },
+    "discord": {
+      "enabled": false,
+      "webhook_url": null,
+      "notify_on_completion": true,
+      "notify_on_error": true
+    },
+    "telegram": {
+      "enabled": false,
+      "bot_token": null,
+      "chat_id": null,
+      "notify_on_completion": true,
+      "notify_on_error": true
+    }
+  }
+} 

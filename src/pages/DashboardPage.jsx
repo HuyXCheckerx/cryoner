@@ -64,8 +64,8 @@ const DashboardPage = ({ variants, transition, tasks, activityLogs }) => {
     >
       <header className="mb-8 flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-slate-100">Welcome, User!</h1>
-          <p className="text-sm text-slate-400">Here's your DorkPlus overview.</p>
+          <h1 className="text-3xl font-bold text-slate-100">Welcome, Perycent!</h1>
+          <p className="text-sm text-slate-400">Here's your Cryoner Dashboard overview.</p>
         </div>
         <div className="flex space-x-2">
             <Link to="/settings">
@@ -83,10 +83,10 @@ const DashboardPage = ({ variants, transition, tasks, activityLogs }) => {
       </header>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
-        <StatCard title="Scraped Links" value={formatStat(stats.scrapedLinks)} icon={Activity} />
-        <StatCard title="Injectable Websites" value={formatStat(stats.injectableWebsites)} icon={ShieldAlert} color="text-yellow-400" />
-        <StatCard title="Databases Found" value={formatStat(stats.databasesFound)} icon={Database} color="text-sky-400"/>
-        <StatCard title="Dumped Rows" value={formatStat(stats.dumpedRows)} icon={Rows} color="text-rose-500" />
+        <StatCard title="Scraped Links" value="2.4K" icon={Activity} />
+        <StatCard title="Injectable Websites" value="123" icon={ShieldAlert} color="text-yellow-400" />
+        <StatCard title="Databases Found" value="1.3K" icon={Database} color="text-sky-400"/>
+        <StatCard title="Dumped Rows" value="90K" icon={Rows} color="text-rose-500" />
       </div>
 
       <Card className="glassmorphism-card mb-8">

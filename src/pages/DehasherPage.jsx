@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -14,6 +14,9 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { Hash, UploadCloud, KeyRound, ListRestart, Loader2, Copy } from 'lucide-react';
+import LineChartComponent from '@/components/charts/LineChartComponent';
+import PieChartComponent from '@/components/charts/PieChartComponent';
+import BarChartComponent from '@/components/charts/BarChartComponent';
 
 const hashTypes = [
   { value: 'auto', label: 'Auto-Detect Hash Type' },
@@ -23,7 +26,50 @@ const hashTypes = [
   { value: 'sha512', label: 'SHA-512' },
   { value: 'bcrypt', label: 'bcrypt (Slow)' },
   { value: 'wordpress', label: 'WordPress (phpass)'},
+  { value: 'vbulletin', label: 'vBulletin (Salted MD5)'},
+  { value: 'mybb', label: 'MyBB (Salted MD5)'},
+  { value: 'joomla', label: 'Joomla (Salted MD5)'},
+  { value: 'django', label: 'Django (Salted SHA1)'},
+  { value: 'crc32', label: 'CRC32' },
+  { value: 'ntlm', label: 'NTLM' },
+  { value: 'lm', label: 'LM' },
+  { value: 'mysql', label: 'MySQL (v3, v4, v5)' },
+  { value: 'mssql', label: 'MSSQL' },
+  { value: 'oracle', label: 'Oracle' },
+  { value: 'postgresql', label: 'PostgreSQL' },
+  { value: 'des', label: 'DES (Unix crypt)' },
+  { value: 'sha224', label: 'SHA-224' },
+  { value: 'sha384', label: 'SHA-384' },
+  { value: 'sha3', label: 'SHA-3' },
+  { value: 'pbkdf2', label: 'PBKDF2' },
+  { value: 'scrypt', label: 'scrypt' },
+  { value: 'argon2', label: 'Argon2' },
+  { value: 'customsalt', label: 'Custom Salted Hash' },
 ];
+
+// Replace useAnimatedNumber and useAnimatedFloat with a version that updates every 1 second to match stats as they change
+const useLiveNumber = (value) => {
+  const [display, setDisplay] = useState(value);
+  useEffect(() => {
+    setDisplay(value);
+    const interval = setInterval(() => {
+      setDisplay(value);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [value]);
+  return display;
+};
+const useLiveFloat = (value) => {
+  const [display, setDisplay] = useState(value);
+  useEffect(() => {
+    setDisplay(value);
+    const interval = setInterval(() => {
+      setDisplay(value);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [value]);
+  return Number(display).toFixed(2);
+};
 
 const DehasherPage = ({ variants, transition, createTask }) => {
   const { toast } = useToast();
@@ -33,6 +79,18 @@ const DehasherPage = ({ variants, transition, createTask }) => {
   const [results, setResults] = useState([]); 
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [stats, setStats] = useState({
+    total: 0,
+    cracked: 0,
+    notFound: 0,
+    dehashRate: 0,
+    hashTypeCounts: {},
+  });
+  const [graphs, setGraphs] = useState({
+    crackSpeed: [],
+    hashTypes: [],
+    dehashResults: [],
+  });
 
   const handleFileChange = (event) => {
     const file = event.target.files?.[0];
@@ -52,6 +110,8 @@ const DehasherPage = ({ variants, transition, createTask }) => {
     setIsProcessing(true);
     setResults([]);
     setProgress(0);
+    setStats({ total: 0, cracked: 0, notFound: 0, dehashRate: 0, hashTypeCounts: {} });
+    setGraphs({ crackSpeed: [], hashTypes: [], dehashResults: [] });
     
     const taskName = selectedHashFile ? `Dehashing ${selectedHashFile.name}` : `Dehashing custom list`;
     createTask({
@@ -84,25 +144,57 @@ const DehasherPage = ({ variants, transition, createTask }) => {
         return;
     }
 
-    const mockDehash = (hash) => {
-      return new Promise(resolve => {
-        setTimeout(() => {
-          if (Math.random() > 0.3) {
-            resolve({ hash, plain: `decrypted_${hash.substring(0,5)}`, status: 'found' });
-          } else {
-            resolve({ hash, plain: null, status: 'not_found' });
-          }
-        }, Math.random() * 100 + 50); 
-      });
-    };
-
-    for (let i = 0; i < inputHashes.length; i++) {
-        const hash = inputHashes[i];
-        const result = await mockDehash(hash);
+    let cracked = 0;
+    let notFound = 0;
+    let hashTypeCounts = {};
+    let crackSpeedData = [];
+    let hashTypesData = {};
+    let dehashResultsData = [];
+    let startTime = Date.now();
+    let hashesProcessed = 0;
+    let i = 0;
+    while (i < inputHashes.length) {
+      // Random batch size between 200 and 400
+      const batchSize = Math.floor(200 + Math.random() * 201);
+      for (let j = 0; j < batchSize && (i + j) < inputHashes.length; j++) {
+        const hash = inputHashes[i + j];
+        const type = hashType === 'auto' ? weightedHashTypeRandom() : hashType;
+        hashTypeCounts[type] = (hashTypeCounts[type] || 0) + 1;
+        const found = Math.random() < 0.99;
+        if (found) cracked++; else notFound++;
+        const result = found
+          ? { hash, plain: `decrypted_${hash.substring(0,5)}`, status: 'found', type }
+          : { hash, plain: null, status: 'not_found', type };
         setResults(prev => [...prev, result]);
-        setProgress(((i + 1) / inputHashes.length) * 100);
+        hashesProcessed++;
+        hashTypesData[type] = (hashTypesData[type] || 0) + 1;
+      }
+      i += batchSize;
+      setProgress((Math.min(i, inputHashes.length) / inputHashes.length) * 100);
+      // Update crack speed and graphs
+      const elapsed = (Date.now() - startTime) / 1000;
+      // Simulate speed fluctuating around 30,000 (e.g., 28,000 - 32,000)
+      const simulatedSpeed = Math.floor(28000 + Math.random() * 4000);
+      crackSpeedData.push({ name: `${Math.ceil(elapsed)}s`, speed: simulatedSpeed });
+      dehashResultsData = [
+        { name: 'Cracked', count: cracked },
+        { name: 'Not Found', count: notFound }
+      ];
+      setGraphs({
+        crackSpeed: [...crackSpeedData],
+        hashTypes: Object.entries(hashTypesData).map(([name, value]) => ({ name, value })),
+        dehashResults: [...dehashResultsData],
+      });
+      await new Promise(res => setTimeout(res, Math.random() * 100 + 50));
     }
-
+    const dehashRate = inputHashes.length ? (cracked / inputHashes.length) * 100 : 0;
+    setStats({
+      total: inputHashes.length,
+      cracked,
+      notFound,
+      dehashRate: dehashRate.toFixed(2),
+      hashTypeCounts,
+    });
     setIsProcessing(false);
     toast({ title: "Dehashing Complete", description: `Processed ${inputHashes.length} hashes.` });
   };
@@ -111,6 +203,26 @@ const DehasherPage = ({ variants, transition, createTask }) => {
     navigator.clipboard.writeText(text);
     toast({title: "Copied!", description: "Decrypted text copied to clipboard."});
   }
+
+  const liveCracked = useLiveNumber(stats.cracked);
+  const liveNotFound = useLiveNumber(stats.notFound);
+  const liveDehashRate = useLiveFloat(Number(stats.dehashRate));
+
+  // Weighted hash type selection for more realistic distribution
+  const commonHashTypes = [
+    'md5', 'sha1', 'sha256', 'sha512', 'bcrypt', 'ntlm', 'lm', 'mysql', 'sha224', 'sha384', 'sha3', 'pbkdf2', 'scrypt', 'argon2'
+  ];
+  const rareHashTypes = hashTypes.map(ht => ht.value).filter(
+    v => !commonHashTypes.includes(v) && v !== 'auto'
+  );
+  const weightedHashTypeRandom = () => {
+    // 80% chance for common, 20% for rare
+    if (Math.random() < 0.8) {
+      return commonHashTypes[Math.floor(Math.random() * commonHashTypes.length)];
+    } else {
+      return rareHashTypes[Math.floor(Math.random() * rareHashTypes.length)];
+    }
+  };
 
   return (
     <motion.div
@@ -177,12 +289,12 @@ const DehasherPage = ({ variants, transition, createTask }) => {
         <Card className="glassmorphism-card lg:col-span-2 flex flex-col">
           <CardHeader className="flex-shrink-0">
             <div className="flex justify-between items-center">
-                <CardTitle className="text-lg font-semibold text-slate-200">Dehashed Results</CardTitle>
-                <Button variant="ghost" size="sm" onClick={() => { setResults([]); setHashesInput(''); setSelectedHashFile(null);}} disabled={isProcessing || results.length === 0} className="text-xs text-slate-400 hover:text-slate-100">
-                    <ListRestart size={14} className="mr-1.5"/> Clear Results
-                </Button>
+              <CardTitle className="text-lg font-semibold text-slate-200">Dehashed Results</CardTitle>
+              <Button variant="ghost" size="sm" onClick={() => { setResults([]); setHashesInput(''); setSelectedHashFile(null); setStats({ total: 0, cracked: 0, notFound: 0, dehashRate: 0, hashTypeCounts: {} }); setGraphs({ crackSpeed: [], hashTypes: [], dehashResults: [] }); }} disabled={isProcessing || results.length === 0} className="text-xs text-slate-400 hover:text-slate-100">
+                <ListRestart size={14} className="mr-1.5"/> Clear Results
+              </Button>
             </div>
-            <CardDescription className="text-slate-400 text-xs">Plain text versions of successfully decrypted hashes.</CardDescription>
+            <CardDescription className="text-slate-400 text-xs">Dehashing statistics and visualizations.</CardDescription>
           </CardHeader>
           <CardContent className="flex-grow overflow-y-auto pr-2 space-y-2">
             {results.length === 0 && !isProcessing && (
@@ -191,27 +303,24 @@ const DehasherPage = ({ variants, transition, createTask }) => {
                 <p>Results will appear here once dehashing is complete.</p>
               </div>
             )}
-            {results.map((result, index) => (
-              <motion.div 
-                key={index} 
-                className="p-3 bg-slate-800/50 rounded-md border border-slate-700/50 flex justify-between items-center text-sm font-mono"
-                initial={{opacity: 0, y: 10}}
-                animate={{opacity: 1, y: 0}}
-                transition={{delay: index * 0.05}}
-              >
-                <div className="truncate mr-2">
-                    <span className="text-slate-500 block text-xs truncate" title={result.hash}>Hash: {result.hash}</span>
-                    {result.status === 'found' && <span className="text-green-400 block truncate" title={result.plain}>Plain: {result.plain}</span>}
-                    {result.status === 'not_found' && <span className="text-red-400 block">Plain: Not Found</span>}
-                    {result.status === 'error' && <span className="text-orange-400 block">Plain: Error</span>}
+            {results.length > 0 && (
+              <div className="mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className="bg-slate-900/80 shadow-lg rounded-2xl p-6 border border-slate-700/40">
+                    <div className="text-xs text-slate-400 mb-3 font-semibold tracking-wider uppercase">Hash Types</div>
+                    <PieChartComponent data={graphs.hashTypes} />
+                  </div>
+                  <div className="bg-slate-900/80 shadow-lg rounded-2xl p-6 border border-slate-700/40">
+                    <div className="text-xs text-slate-400 mb-3 font-semibold tracking-wider uppercase">Dehash Results</div>
+                    <BarChartComponent data={graphs.dehashResults} />
+                  </div>
+                  <div className="bg-slate-900/80 shadow-lg rounded-2xl p-6 border border-slate-700/40">
+                    <div className="text-xs text-slate-400 mb-3 font-semibold tracking-wider uppercase">Dehash Speed (hashes/min)</div>
+                    <LineChartComponent data={graphs.crackSpeed} dataKey="speed" lineColor="hsl(var(--primary))" />
+                  </div>
                 </div>
-                {result.status === 'found' && result.plain && (
-                    <Button variant="ghost" size="icon" className="h-7 w-7 text-slate-400 hover:text-primary flex-shrink-0" onClick={() => handleCopyResult(result.plain)}>
-                        <Copy size={14}/>
-                    </Button>
-                )}
-              </motion.div>
-            ))}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

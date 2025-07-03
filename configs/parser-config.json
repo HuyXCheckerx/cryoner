@@ -1,0 +1,132 @@
+{
+  "module": "parser",
+  "name": "Parser Configuration",
+  "description": "Configuration for parsing data with custom rules and proxies",
+  "version": "1.0.0",
+  "settings": {
+    "database_range": {
+      "type": "Standard",
+      "custom_range": null,
+      "include_public": true,
+      "include_private": false,
+      "include_premium": false,
+      "max_database_size": "10GB"
+    },
+    "search_aggressiveness": {
+      "level": 9,
+      "max_concurrent_threads": 50,
+      "request_rate_limit": 1000,
+      "timeout_per_request": 5,
+      "retry_failed_requests": true,
+      "max_retries": 3
+    },
+    "parsing_rules": {
+      "mode": "custom",
+      "default_rules": {
+        "email_pattern": "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b",
+        "phone_pattern": "\\b\\d{3}[-.]?\\d{3}[-.]?\\d{4}\\b",
+        "url_pattern": "https?://[^\\s]+",
+        "ip_pattern": "\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b"
+      },
+      "custom_rules": [
+        {
+          "name": "email_extraction",
+          "pattern": "email:\\s*([^\\s]+)",
+          "capture_group": 1,
+          "enabled": true
+        },
+        {
+          "name": "password_extraction",
+          "pattern": "password:\\s*([^\\s]+)",
+          "capture_group": 1,
+          "enabled": true
+        },
+        {
+          "name": "username_extraction",
+          "pattern": "user:\\s*([^\\s]+)",
+          "capture_group": 1,
+          "enabled": true
+        }
+      ],
+      "output_format": "json",
+      "include_metadata": true
+    },
+    "data_processing": {
+      "input_file": "data_list.txt",
+      "output_file": "parsed_results.json",
+      "batch_size": 1000,
+      "enable_validation": true,
+      "remove_duplicates": true,
+      "sort_results": false,
+      "encoding": "utf-8"
+    },
+    "proxies": {
+      "use_proxies": true,
+      "proxy_file": "proxies.txt",
+      "proxy_type": "http",
+      "proxy_rotation": "random",
+      "proxy_timeout": 10,
+      "max_proxy_failures": 5,
+      "proxy_authentication": {
+        "username": null,
+        "password": null
+      }
+    },
+    "performance": {
+      "cpu_usage_limit": 90,
+      "memory_limit": "4GB",
+      "disk_cache_enabled": true,
+      "cache_size": "1GB",
+      "parallel_processing": true,
+      "thread_pool_size": 20
+    },
+    "filtering": {
+      "enable_content_filtering": true,
+      "filter_patterns": [
+        "spam",
+        "invalid",
+        "test"
+      ],
+      "min_content_length": 5,
+      "max_content_length": 1000,
+      "case_sensitive": false
+    },
+    "output_options": {
+      "save_to_file": true,
+      "save_to_database": false,
+      "compress_output": false,
+      "backup_original": true,
+      "create_summary": true,
+      "export_formats": ["json", "csv", "txt"]
+    },
+    "monitoring": {
+      "enable_logging": true,
+      "log_level": "info",
+      "save_progress": true,
+      "progress_interval": 60,
+      "performance_metrics": true,
+      "error_reporting": true
+    },
+    "advanced": {
+      "debug_mode": false,
+      "verbose_output": false,
+      "custom_headers": {},
+      "ssl_verification": true,
+      "follow_redirects": true,
+      "max_redirect_depth": 3
+    }
+  },
+  "files": {
+    "data_file": "data_list.txt",
+    "proxies_file": "proxies.txt",
+    "rules_file": "custom_rules.txt",
+    "output_directory": "./parsed_results"
+  },
+  "validation": {
+    "email_validation": true,
+    "url_validation": true,
+    "phone_validation": true,
+    "ip_validation": true,
+    "custom_validators": []
+  }
+} 

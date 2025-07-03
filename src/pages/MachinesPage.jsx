@@ -8,11 +8,11 @@ import StatusBadge from '@/components/StatusBadge';
 import { Server, PlusCircle, Trash2, RefreshCw, Wifi, WifiOff, Edit3, Search, Terminal } from 'lucide-react';
 
 const mockMachines = [
-  { id: 'MACHINE001', name: 'Primary Bot Node', ip: '192.168.1.101', status: 'Online', tasks: 5, type: 'Dedicated Server', location: 'Frankfurt, DE' },
-  { id: 'MACHINE002', name: 'VPS Scraper Alpha', ip: '104.24.110.5', status: 'Online', tasks: 2, type: 'VPS', location: 'New York, US' },
-  { id: 'MACHINE003', name: 'Proxy Bot Gamma', ip: '203.0.113.45', status: 'Offline', tasks: 0, type: 'Residential Proxy Node', location: 'London, UK' },
-  { id: 'MACHINE004', name: 'Internal Testbed', ip: '127.0.0.1', status: 'Error', tasks: 1, type: 'Local Machine', location: 'User Office' },
-  { id: 'MACHINE005', name: 'Backup Scanner', ip: '172.16.0.53', status: 'Online', tasks: 0, type: 'VPS', location: 'Singapore, SG' },
+  { id: 'MACHINE001', name: 'Primary Bot', ip: '1**.***.*.**', status: 'Online', tasks: 5, type: 'Dedicated Server', location: 'Frankfurt, DE' },
+  { id: 'MACHINE002', name: 'BOTNET cluster', ip: '1**.***.*.*', status: 'Online', tasks: 2, type: 'VPS', location: 'New York, US' },
+  { id: 'MACHINE003', name: 'Extra1', ip: '**.***.*.**', status: 'Offline', tasks: 0, type: 'Residential Proxy Node', location: 'London, UK' },
+  { id: 'MACHINE004', name: 'Extra2', ip: '2**.***.*.**', status: 'Error', tasks: 1, type: 'Local Machine', location: 'User Office' },
+  { id: 'MACHINE005', name: 'Extra3', ip: '1**.***.*.***', status: 'Online', tasks: 0, type: 'VPS', location: 'Singapore, SG' },
 ];
 
 const MachinesPage = ({ variants, transition }) => {
